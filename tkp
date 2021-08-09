@@ -10,6 +10,7 @@ KWINRULES=~/.config/kwinrulesrc
 echo "Click on app you want to configure"
 ##     ----- | Find app WM class         | get after '='   | remove "    | remove ,      | change to lowercase     | remove duplicated names 
 name=$(xprop | grep "WM_CLASS(STRING) =" | cut -f3- -d " " | sed 's/"//g' | sed 's/,//g' | sed -e 's/\(.*\)/\L\1/' | xargs -n1 | uniq | xargs)
+echo "Selected app: $name"
 APP_NAME=$(echo $name | sed 's/ //g')
 DESCRIPTION="Titlebar color for $APP_NAME"
 NEW_COLOR_SCHEME=~/.local/share/color-schemes/$APP_NAME.colors
@@ -26,7 +27,7 @@ g=`echo "ibase=16; $b" | bc`
 b=`echo "ibase=16; $c" | bc`
 
 kde_color="$r,$g,$b"
-echo "Color: $color ($kde_color)"
+echo "Selected color: $color ($kde_color)"
 
 ## Func for calculating floats
 calc() {
@@ -35,10 +36,10 @@ calc() {
 
 ## Check if selected color is more sutable with light colorscheme text
 calc_color() {
-    let color=$1/255
-    l_comp=$(calc $color/12.92)
-    if (( $(echo "$color > 0.03928" | bc) )); then
-        l_comp=$(calc \($color+0.055\)^2.4)
+    c=$(calc 1/255)
+    l_comp=$(calc $c/12.92)
+    if (( $(echo "$c > 0.03928" | bc) )); then
+        l_comp=$(calc \($c+0.055\)^2.4)
     fi
     echo "$l_comp"
 }

@@ -10,17 +10,17 @@ here are some examples how it can help make UI clean and a bit more modern.
 
 ### Firefox
 
-![image-20210808124229076](image-20210808124229076.png)
+![image-20210808124229076](screenshots/image-20210808124229076.png)
 
 
 
 ### Visual Studio Code
 
-![image-20210808124344563](image-20210808124344563.png)
+![image-20210808124344563](screenshots/image-20210808124344563.png)
 
 ### Typora
 
-![image-20210808154411005](image-20210808154411005.png)
+![image-20210808154411005](screenshots/image-20210808154411005.png)
 
 
 
@@ -48,9 +48,12 @@ All the rules can be removed by going to `Window Rules` and deleting the rule na
 
 ## How it works
 
-The script first uses `xprop` to acquire window's `WM_CLASS` used for KDE's window rules to apply color only to that specific app. Next, the script will ask you to click on a color that you wish to use for the titlebar. Selected color is then evaluated and based on contrast standards it selects the right color-scheme variant to override so title text is visible even on white titlebars ([see Typora example](#typora)).
+The script first uses `xprop` to acquire window's `WM_CLASS` used for KDE's window rules to apply color only to that specific app. Next, the script uses `grabc` to grab a color from your screen and use it as titlebar background. Selected color is then evaluated and based on contrast standards right color-scheme variant is selected to be overridden so title text is visible even on white titlebars ([see Typora example](#typora)).
 
-The screen uses then creates a new color-scheme, by default overriding BreezeDark and as only the titlebar color-scheme is being overridden, changing every occurrence of BackgroundNormal and BackgroundAlternate does the trick. These overrides are stored under `~/.config/kwinrulesrc`.
+Because the color-scheme is only used for the titlebar, just changing every occurrence of BackgroundNormal and BackgroundAlternate works relatively well.
+
+- Window Rules file: `~/.config/kwinrulesrc`.
+- Color Scheme directory: `~/.local/share/color-schemes/`
 
 
 
@@ -62,6 +65,6 @@ The screen uses then creates a new color-scheme, by default overriding BreezeDar
 
 ## TODO
 
-[] Re-apply configuration after modifying  existing color scheme
+- [] Re-apply configuration after modifying  existing color scheme
 
-[] Show prompt asking if the automatic color-scheme selection is correct/preferred 
+- [] Show prompt asking if the automatic color-scheme selection is correct/preferred 
