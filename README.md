@@ -10,7 +10,7 @@ here are some examples how it can help make UI clean and a bit more modern.
 
 ### Firefox
 
-![image-20210808124229076](screenshots/image-20210808124229076.png)
+![image-20210809183547063](screenshots/image-20210809183547063.png)
 
 
 
