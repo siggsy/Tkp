@@ -3,20 +3,22 @@
 ## Debugging
 # set -x
 
-DEFAULT_COLOR_SCHEME=/usr/share/color-schemes/BreezeDark.colors
+## Editable variables
+DARK_COLOR_SCHEME=/usr/share/color-schemes/BreezeDark.colors
 LIGHT_COLOR_SCHEME=/usr/share/color-schemes/BreezeLight.colors
+
 KWINRULES=~/.config/kwinrulesrc
 
 echo "Click on app you want to configure"
-##     ----- | Find app WM class         | get after '='   | remove "    | remove ,      | change to lowercase     | remove duplicated names 
-name=$(xprop | grep "WM_CLASS(STRING) =" | cut -f3- -d " " | sed 's/"//g' | sed 's/,//g' | sed -e 's/\(.*\)/\L\1/' | xargs -n1 | uniq | xargs)
+##     ----- | Find app WM class         | get after '='   | remove "    | remove ,      | change to lowercase     | only last value
+name=$(xprop | grep "WM_CLASS(STRING) =" | cut -f3- -d " " | sed 's/"//g' | sed 's/,//g' | sed -e 's/\(.*\)/\L\1/' | xargs -n1 | tail -n 1)
 echo "Selected app: $name"
-APP_NAME=$(echo $name | sed 's/ //g')
-DESCRIPTION="Titlebar color for $APP_NAME"
-NEW_COLOR_SCHEME=~/.local/share/color-schemes/$APP_NAME.colors
+app_name=$(echo $name | sed 's/ //g')
+description="Titlebar color for $app_name"
+new_color_scheme=~/.local/share/color-schemes/$app_name.colors
 
-echo "Select color on the screen"
 ## Get color and convert hex (#RRGGBB) to dec (RR,GG,BB)
+echo "Select color on the screen"
 color=$(grabc | awk '{print substr($0, 2)}')
 hexinput=`echo $color | tr '[:lower:]' '[:upper:]'`  # uppercase-ing
 a=`echo $hexinput | cut -c-2`
@@ -55,15 +57,15 @@ contrast=$(calc 1.05/$l)
 if (( $(echo "$contrast < 4.5" | bc) )); then
     COLOR_SCHEME=$LIGHT_COLOR_SCHEME
 else
-    COLOR_SCHEME=$DEFAULT_COLOR_SCHEME
+    COLOR_SCHEME=$DARK_COLOR_SCHEME
 fi
 
 ## Create a new colorscheme for the app
-cp $COLOR_SCHEME $NEW_COLOR_SCHEME
-sed -i "s/BackgroundAlternate=.*/BackgroundAlternate=$kde_color/g" $NEW_COLOR_SCHEME
-sed -i "s/BackgroundNormal=.*/BackgroundNormal=$kde_color/g" $NEW_COLOR_SCHEME
-sed -i "/Name*/d" $NEW_COLOR_SCHEME
-echo "Name=$APP_NAME" >> $NEW_COLOR_SCHEME
+cp $COLOR_SCHEME $new_color_scheme
+sed -i "s/BackgroundAlternate=.*/BackgroundAlternate=$kde_color/g" $new_color_scheme
+sed -i "s/BackgroundNormal=.*/BackgroundNormal=$kde_color/g" $new_color_scheme
+sed -i "/Name*/d" $new_color_scheme
+echo "Name=$app_name" >> $new_color_scheme
 
 KGROUPNUM=$(kreadconfig5 --file $KWINRULES --group "General" --key count)
 
@@ -71,35 +73,45 @@ KGROUPNUM=$(kreadconfig5 --file $KWINRULES --group "General" --key count)
 for i in $(seq 1 $KGROUPNUM)
 do
     description_value=$(kreadconfig5 --file ~/.config/kwinrulesrc --key Description --group $i)
-    if [ "$description_value" = "$DESCRIPTION" ]; then
+    if [ "$description_value" = "$description" ]; then
         group=$i
         break
     fi   
 done
 
-if [ -z ${group+x} ]; then
-    let KGROUPNUM++
+## Func for writing config to a new group
+wc() {
+    kwriteconfig5 --file $KWINRULES --group "${group}" --key $1 "$2"
+}
 
-    ## Func for writing config to a new group
-    wc() {
-        kwriteconfig5 --file $KWINRULES --group "${KGROUPNUM}" --key $1 "$2"
-    }
+if [ -z ${group+x} ]; then
+    group=$(($KGROUPNUM + 1))
     
     ## New rule
-    wc Description "$DESCRIPTION"
-    wc decocolor "$APP_NAME"
+    wc Description "$description"
+    wc decocolor "$app_name"
     wc decocolorrule 2
     wc wmclass "$name"
     wc wmclassmatch 1
 
     ## Increase config count number
-    kwriteconfig5 --file $KWINRULES --group "General" --key count ${KGROUPNUM}
+    kwriteconfig5 --file $KWINRULES --group "General" --key count ${group}
 
-    unset wc
+    ## Apply changes
+    qdbus org.kde.KWin /KWin reconfigure
+else
+    ## Apply a different colorscheme, so it forces a refresh on an existing rule
+    wc decocolor "BreezeDark"
+    qdbus org.kde.KWin /KWin reconfigure
+
+    ## Wait some time, so the color-scheme properly applies
+    sleep 1
+
+    ## Apply modified custom color scheme
+    wc decocolor "$app_name"
+    qdbus org.kde.KWin /KWin reconfigure
 fi
 
-## Apply changes
-qdbus org.kde.KWin /KWin reconfigure
-
+unset wc
 unset calc
 unset calc_color

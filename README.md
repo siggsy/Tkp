@@ -30,6 +30,7 @@ here are some examples how it can help make UI clean and a bit more modern.
 
 - xprop
 - grabc
+- bc
 - X11 session (wayland not tested nor supported. The script uses X11 tools)
 
 ### Getting the script
@@ -46,9 +47,18 @@ All the rules can be removed by going to `Window Rules` and deleting the rule na
 
 
 
+## Customization
+
+The first two variables can be changed
+
+- `DARK_COLOR_SCHEME`: path to the dark color-scheme
+- `LIGH_COLOR_SCHEME`: path to the light color-scheme
+
+
+
 ## How it works
 
-The script first uses `xprop` to acquire window's `WM_CLASS` used for KDE's window rules to apply color only to that specific app. Next, the script uses `grabc` to grab a color from your screen and use it as titlebar background. Selected color is then evaluated and based on contrast standards right color-scheme variant is selected to be overridden so title text is visible even on white titlebars ([see Typora example](#typora)).
+The script first uses `xprop` to acquire window's `WM_CLASS` used for KDE's window rules to apply color only to that specific app. Next, the script runs `grabc` to grab a color from the screen to use it as titlebar background. Color is then evaluated and based on contrast standards the right color-scheme variant is selected to be overridden so title text is visible even on white titlebars ([see Typora example](#typora)).
 
 Because the color-scheme is only used for the titlebar, just changing every occurrence of BackgroundNormal and BackgroundAlternate works relatively well.
 
@@ -60,11 +70,14 @@ Because the color-scheme is only used for the titlebar, just changing every occu
 ## Known bugs
 
 - Picking color from Konsole always returns #000000
+- `xprop` sometime returns WM_CLASS with more than one value. Currently it's set to use the last in the list, but it isn't tested or researched if this applies globally
 
 
 
 ## TODO
 
-- [] Re-apply configuration after modifying  existing color scheme
+- [x] ~~Re-apply configuration after modifying  existing color scheme~~
 
-- [] Show prompt asking if the automatic color-scheme selection is correct/preferred 
+- [ ] Show prompt asking if the automatic color-scheme selection is correct/preferred 
+- [ ] Change button colors depending on contrast (might be tricky, since not everyone uses default window decorations)
+
