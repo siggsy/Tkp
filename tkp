@@ -18,17 +18,22 @@ description="Titlebar color for $app_name"
 new_color_scheme=~/.local/share/color-schemes/$app_name.colors
 
 ## Get color and convert hex (#RRGGBB) to dec (RR,GG,BB)
-echo "Select color on the screen"
-color=$(grabc | awk '{print substr($0, 2)}')
-hexinput=`echo $color | tr '[:lower:]' '[:upper:]'`  # uppercase-ing
-a=`echo $hexinput | cut -c-2`
-b=`echo $hexinput | cut -c3-4`
-c=`echo $hexinput | cut -c5-6`
-r=`echo "ibase=16; $a" | bc`
-g=`echo "ibase=16; $b" | bc`
-b=`echo "ibase=16; $c" | bc`
+echo "$1"
+if [ -z "$1" ]; then
+    echo "Select color on the screen"
+    color=$(grabc | awk '{print substr($0, 2)}')
+    hexinput=`echo $color | tr '[:lower:]' '[:upper:]'`  # uppercase-ing
+    a=`echo $hexinput | cut -c-2`
+    b=`echo $hexinput | cut -c3-4`
+    c=`echo $hexinput | cut -c5-6`
+    r=`echo "ibase=16; $a" | bc`
+    g=`echo "ibase=16; $b" | bc`
+    b=`echo "ibase=16; $c" | bc`
+    kde_color="$r,$g,$b"
+else
+    kde_color=$1
+fi
 
-kde_color="$r,$g,$b"
 echo "Selected color: $color ($kde_color)"
 
 ## Func for calculating floats
