@@ -43,7 +43,7 @@ calc() {
 
 ## Check if selected color is more sutable with light colorscheme text
 calc_color() {
-    c=$(calc 1/255)
+    c=$(calc $1/255)
     l_comp=$(calc $c/12.92)
     if (( $(echo "$c > 0.03928" | bc) )); then
         l_comp=$(calc \($c+0.055\)^2.4)
