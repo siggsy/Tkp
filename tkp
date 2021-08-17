@@ -32,6 +32,9 @@ if [ -z "$1" ]; then
     kde_color="$r,$g,$b"
 else
     kde_color=$1
+    r=$(echo "$kde_color" | cut -d ',' -f1)
+    g=$(echo "$kde_color" | cut -d ',' -f2)
+    b=$(echo "$kde_color" | cut -d ',' -f3)
 fi
 
 echo "Selected color: $color ($kde_color)"
@@ -55,7 +58,7 @@ calc_color() {
 calc_r=$(calc_color $r)
 calc_g=$(calc_color $g)
 calc_b=$(calc_color $b)
-l=$(calc "$calc_r*0.2126 + $calc_g*0.7152 + $calc_b*0.0722")
+l=$(calc "$calc_r*0.2126 + $calc_g*0.7152 + $calc_b*0.0722 + 0.05")
 contrast=$(calc 1.05/$l)
 
 ## If contrast is less than recommended text (4.5:1), then switch to light
