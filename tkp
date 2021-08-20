@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## Debugging
-set -x
+# set -x
 
 ## Editable variables
 DARK_COLOR_SCHEME=/usr/share/color-schemes/BreezeDark.colors
