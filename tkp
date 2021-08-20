@@ -6,6 +6,7 @@
 ## Editable variables
 DARK_COLOR_SCHEME=/usr/share/color-schemes/BreezeDark.colors
 LIGHT_COLOR_SCHEME=/usr/share/color-schemes/BreezeLight.colors
+PREFIX="z_tkp_"
 
 KWINRULES=~/.config/kwinrulesrc
 
@@ -15,8 +16,8 @@ name=$(xprop | grep "WM_CLASS(STRING) =" | cut -f3- -d " " | sed 's/"//g' | sed 
 echo ""
 echo "Selected app: $name"
 app_name=$(echo $name | sed 's/ //g')
-description="Titlebar color for $app_name"
-new_color_scheme=~/.local/share/color-schemes/$app_name.colors
+rule_name="$PREFIX$app_name"
+new_color_scheme=~/.local/share/color-schemes/$PREFIX$app_name.colors
 
 hex_2_dec() {
     echo $1 | tr '[:lower:]' '[:upper:]' | cut -c$2-$3 | xargs -I {} echo "ibase=16; {}" | bc
@@ -102,8 +103,8 @@ KGROUPNUM=$(kreadconfig5 --file $KWINRULES --group "General" --key count)
 ## Check wether the rule already exists
 for i in $(seq 1 $KGROUPNUM)
 do
-    description_value=$(kreadconfig5 --file ~/.config/kwinrulesrc --key Description --group $i)
-    if [ "$description_value" = "$description" ]; then
+    rule_name_value=$(kreadconfig5 --file ~/.config/kwinrulesrc --key description --group $i)
+    if [ "$rule_name_value" = "$rule_name" ]; then
         group=$i
         break
     fi   
@@ -118,8 +119,8 @@ if [ -z ${group+x} ]; then
     group=$(($KGROUPNUM + 1))
     
     ## New rule
-    wc Description "$description"
-    wc decocolor "$app_name"
+    wc description "$rule_name"
+    wc decocolor "$rule_name"
     wc decocolorrule 2
     wc wmclass "$name"
     wc wmclassmatch 1
