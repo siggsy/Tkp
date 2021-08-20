@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## Debugging
-# set -x
+set -x
 
 ## Editable variables
 DARK_COLOR_SCHEME=/usr/share/color-schemes/BreezeDark.colors
@@ -139,7 +139,7 @@ else
     sleep 1
 
     ## Apply modified custom color scheme
-    wc decocolor "$app_name"
+    wc decocolor "$rule_name"
     qdbus org.kde.KWin /KWin reconfigure
 fi
 
