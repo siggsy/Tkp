@@ -103,7 +103,7 @@ KGROUPNUM=$(kreadconfig5 --file $KWINRULES --group "General" --key count)
 ## Check wether the rule already exists
 for i in $(seq 1 $KGROUPNUM)
 do
-    rule_name_value=$(kreadconfig5 --file ~/.config/kwinrulesrc --key description --group $i)
+    rule_name_value=$(kreadconfig5 --file $KWINRULES --key Description --group $i)
     if [ "$rule_name_value" = "$rule_name" ]; then
         group=$i
         break
