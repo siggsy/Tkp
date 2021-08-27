@@ -23,7 +23,7 @@ here are some examples how it can help make UI clean and a bit more modern.
 ### Prerequisites
 
 - xprop
-- grabc
+- kcolorchooser
 - bc
 - X11 session (wayland not tested nor supported. The script uses X11 tools)
 
@@ -59,7 +59,7 @@ Some variables can be changed in the script
 
 ## How it works
 
-The script first uses `xprop` to acquire window's `WM_CLASS` used for KDE's window rules to apply color only to that specific app. Next, the script runs `grabc` to grab a color from the screen to use it as titlebar background. Color is then evaluated and based on contrast standards the right color-scheme variant is selected to be overridden so title text is visible even on white titlebars ([see Typora example](#typora)).
+The script first uses `xprop` to acquire window's `WM_CLASS` used for KDE's window rules to apply color only to that specific app. Next, the script runs `kcolorchooser` to grab a color from the screen to use it as titlebar background. Color is then evaluated and based on contrast standards the right color-scheme variant is selected to be overridden so title text is visible even on white titlebars ([see Typora example](#typora)).
 
 Because the color-scheme is only used for the titlebar, just changing every occurrence of BackgroundNormal and BackgroundAlternate works relatively well.
 
@@ -69,7 +69,7 @@ Because the color-scheme is only used for the titlebar, just changing every occu
 
 ## Known bugs
 
-- Picking color from Konsole always returns #000000
+- ~~Picking color from Konsole always returns #000000~~
 - `xprop` sometime returns WM_CLASS with more than one value. Currently it's set to use the last in the list, but it isn't tested or researched if this applies globally
 
 
