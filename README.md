@@ -1,4 +1,4 @@
-[![tkp-git](https://img.shields.io/aur/version/tkp-git?color=1793d1&label=yay&logo=arch-linux&style=for-the-badge)](https://aur.archlinux.org/packages/tkp-git/)
+[![tkp-git](https://img.shields.io/aur/version/tkp-git?color=1793d1&label=tkp-git&logo=arch-linux&style=for-the-badge)](https://aur.archlinux.org/packages/tkp-git/)
 # Titlebar Kolor Picker
 
 Simple titlebar color changer for KDE
