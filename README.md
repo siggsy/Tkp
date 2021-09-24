@@ -45,9 +45,13 @@ All the rules can be removed by going to `Window Rules` and deleting the rule na
 ## Usage
 
 `tkp` - Interactive mode
+
 `tkp "RR,GG,BB,AA"` - Manual mode (change RR,GG,BB,AA with decimal values from 0 - 255)
+
 `tkp "#RRGGBB"` - Manual RGB (hex)
+
 `tkp "#AARRGGBB"` - Manual ARGB (hex)
+
 
 
 ## Customization
