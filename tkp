@@ -104,6 +104,7 @@ sed -i "/Name*/d" $new_color_scheme
 echo "Name=$app_name" >> $new_color_scheme
 
 KGROUPNUM=$(kreadconfig5 --file $KWINRULES --group "General" --key count)
+KRULESSTR=$(kreadconfig5 --file $KWINRULES --group "General" --key rules)
 
 ## Check wether the rule already exists
 for i in $(seq 1 $KGROUPNUM)
@@ -132,6 +133,11 @@ if [ -z ${group+x} ]; then
 
     ## Increase config count number
     kwriteconfig5 --file $KWINRULES --group "General" --key count ${group}
+
+    ## Add new rule to rules string
+    [[ $KRULESSTR = "" ]] && rules=${group} || rules=${KRULESSTR},${group}
+
+    kwriteconfig5 --file $KWINRULES --group "General" --key rules ${rules}
 
     ## Apply changes
     qdbus org.kde.KWin /KWin reconfigure
