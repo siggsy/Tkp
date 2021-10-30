@@ -6,7 +6,7 @@
 ## Editable variables
 DARK_COLOR_SCHEME=/usr/share/color-schemes/BreezeDark.colors
 LIGHT_COLOR_SCHEME=/usr/share/color-schemes/BreezeLight.colors
-PREFIX="TKP-"
+PREFIX="z_tkp_"
 
 ## Config file locations
 KWINRULES=~/.config/kwinrulesrc
@@ -20,7 +20,7 @@ echo "Click on app you want to configure"
 name=$(xprop | grep "WM_CLASS(STRING) =" | cut -f3- -d " " | sed 's/"//g' | sed 's/,//g' | sed -e 's/\(.*\)/\L\1/' | xargs -n1 | tail -n 1)
 echo ""
 echo "Selected app: $name"
-app_name=$(echo $name | sed -r 's/(^|-)(\w)/\U\2/g')
+app_name=$(echo $name | sed 's/ //g')
 rule_name="$PREFIX$app_name"
 new_color_scheme=$KCOLORSCHEMES/$PREFIX$app_name.colors
 
@@ -69,7 +69,7 @@ echo "Selected color: $color ($kde_color)"
 
 ## Func for calculating floats
 calc() {
-    echo "$1" | bc -l | awk '{printf "%d", $0}'
+    echo "$1" | bc -l | awk '{printf "%f", $0}'
 }
 
 ## Check if selected color is more sutable with light colorscheme text
@@ -104,7 +104,6 @@ sed -i "/Name*/d" $new_color_scheme
 echo "Name=$app_name" >> $new_color_scheme
 
 KGROUPNUM=$(kreadconfig5 --file $KWINRULES --group "General" --key count)
-KRULESSTR=$(kreadconfig5 --file $KWINRULES --group "General" --key rules)
 
 ## Check wether the rule already exists
 for i in $(seq 1 $KGROUPNUM)
@@ -133,11 +132,6 @@ if [ -z ${group+x} ]; then
 
     ## Increase config count number
     kwriteconfig5 --file $KWINRULES --group "General" --key count ${group}
-
-    ## Add new rule to rules string
-    [[ $KRULESSTR = "" ]] && rules=${group} || rules=${KRULESSTR},${group}
-
-    kwriteconfig5 --file $KWINRULES --group "General" --key rules ${rules}
 
     ## Apply changes
     qdbus org.kde.KWin /KWin reconfigure
