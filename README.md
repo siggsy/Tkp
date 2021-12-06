@@ -1,7 +1,8 @@
-[![tkp-git](https://img.shields.io/aur/version/tkp-git?color=1793d1&label=tkp-git&logo=arch-linux&style=for-the-badge)](https://aur.archlinux.org/packages/tkp-git/)
 # Titlebar Kolor Picker
 
 Simple titlebar color changer for KDE
+
+[![tkp-git](https://img.shields.io/aur/version/tkp-git?color=1793d1&label=tkp-git&logo=arch-linux&style=for-the-badge)](https://aur.archlinux.org/packages/tkp-git/)
 
 ## Description
 
@@ -9,15 +10,13 @@ Titlebar Kolor Picker (or tkp) is a simple interactive shell script that lets yo
 
 here are some examples how it can help make UI clean and a bit more modern.
 
-### Firefox
-![image-20210809183547063](screenshots/image-20210809183547063.png)
-
 ### Visual Studio Code
-![image-20210808124344563](screenshots/image-20210808124344563.png)
+
+![image-20210808124344563](screenshots/vscode.png)
 
 ### Typora
-![image-20210808154411005](screenshots/image-20210808154411005.png)
 
+![image-20210808154411005](screenshots/typora.png)
 
 ## Installation
 
@@ -30,7 +29,7 @@ here are some examples how it can help make UI clean and a bit more modern.
 
 ### Getting the script
 
-Download the script by cloning the repository 
+Download the script by cloning the repository
 
 ```git clone https://github.com/siggsy/Tkp```
 
@@ -39,8 +38,6 @@ or by downloading the script `tkp` directly from the browser and placing it in t
 ### Remove overrides
 
 All the rules can be removed by going to `Window Rules` and deleting the rule named  `Titlebar color for your-app`.
-
-
 
 ## Usage
 
@@ -52,15 +49,13 @@ All the rules can be removed by going to `Window Rules` and deleting the rule na
 
 `tkp "#AARRGGBB"` - Manual ARGB (hex)
 
-
-
 ## Customization
 
 Some variables can be changed in the script
+
 - `DARK_COLOR_SCHEME`: path to the dark color-scheme
 - `LIGH_COLOR_SCHEME`: path to the light color-scheme
 - `PREFIX`: Prefix to use when creating window rules and color-schemes
-
 
 ## How it works
 
@@ -71,15 +66,13 @@ Because the color-scheme is only used for the titlebar, just changing every occu
 - Window Rules file: `~/.config/kwinrulesrc`.
 - Color Scheme directory: `~/.local/share/color-schemes/`
 
-
 ## Known bugs
 
 - ~~Picking color from Konsole always returns #000000~~
 - `xprop` sometime returns WM_CLASS with more than one value. Currently it's set to use the last in the list, but it isn't tested or researched if this applies globally
 
-
 ## TODO
 
 - [x] ~~Re-apply configuration after modifying  existing color scheme~~
-- [ ] Show prompt asking if the automatic color-scheme selection is correct/preferred 
+- [ ] Show prompt asking if the automatic color-scheme selection is correct/preferred
 - [ ] Change button colors depending on contrast (might be tricky, since not everyone uses default window decorations)

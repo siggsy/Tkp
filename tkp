@@ -20,12 +20,12 @@ echo "Click on app you want to configure"
 name=$(xprop | grep "WM_CLASS(STRING) =" | cut -f3- -d " " | sed 's/"//g' | sed 's/,//g' | sed -e 's/\(.*\)/\L\1/' | xargs -n1 | tail -n 1)
 echo ""
 echo "Selected app: $name"
-app_name=$(echo $name | sed 's/ //g')
+app_name=${name// /}
 rule_name="$PREFIX$app_name"
 new_color_scheme=$KCOLORSCHEMES/$PREFIX$app_name.colors
 
 hex_2_dec() {
-    echo $1 | tr '[:lower:]' '[:upper:]' | cut -c$2-$3 | xargs -I {} echo "ibase=16; {}" | bc
+    echo "$1" | tr '[:lower:]' '[:upper:]' | cut -c"$2"-"$3" | xargs -I {} echo "ibase=16; {}" | bc
 }
 
 ## Get color and convert hex (#RRGGBB) to dec (RR,GG,BB)
@@ -33,25 +33,25 @@ echo "$1"
 if [ -z "$1" ]; then
     echo "Select color on the screen"
     color=$(kcolorchooser --print)
-    r=`hex_2_dec ${color:1} 1 2`
-    g=`hex_2_dec ${color:1} 3 4`
-    b=`hex_2_dec ${color:1} 5 6`
+    r=$(hex_2_dec "${color:1}" 1 2)
+    g=$(hex_2_dec "${color:1}" 3 4)
+    b=$(hex_2_dec "${color:1}" 5 6)
     kde_color="$r,$g,$b"
 else
     # Figure out which format was used
     color=$1
     if [[ $color =~ \#[a-fA-F0-9]{6}$ ]]; then
         # RGB
-        r=`hex_2_dec ${color:1} 1 2`
-        g=`hex_2_dec ${color:1} 3 4`
-        b=`hex_2_dec ${color:1} 5 6`
+        r=$(hex_2_dec "${color:1}" 1 2)
+        g=$(hex_2_dec "${color:1}" 3 4)
+        b=$(hex_2_dec "${color:1}" 5 6)
         kde_color="$r,$g,$b"
     elif [[ $color =~ \#[a-fA-F0-9]{8}$ ]]; then
         # ARGB
-        a=`hex_2_dec ${color:1} 1 2`
-        r=`hex_2_dec ${color:1} 3 4`
-        g=`hex_2_dec ${color:1} 5 6`
-        b=`hex_2_dec ${color:1} 7 8`
+        a=$(hex_2_dec "${color:1}" 1 2)
+        r=$(hex_2_dec "${color:1}" 3 4)
+        g=$(hex_2_dec "${color:1}" 5 6)
+        b=$(hex_2_dec "${color:1}" 7 8)
         kde_color="$r,$g,$b,$a"
     elif [[ $color =~ \d{1,3}(?:,\d{1,3}){2,3}$ ]]; then
         # KDE format
