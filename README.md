@@ -1,5 +1,7 @@
 # Titlebar Kolor Picker
 
+**Archive notice:** moved to gilab
+
 Simple titlebar color changer for KDE
 
 [![tkp-git](https://img.shields.io/aur/version/tkp-git?color=1793d1&label=tkp-git&logo=arch-linux&style=for-the-badge)](https://aur.archlinux.org/packages/tkp-git/)
