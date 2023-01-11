@@ -1,6 +1,6 @@
 # Titlebar Kolor Picker
 
-**Archive notice:** moved to gilab
+## Archive notice: moved to gilab
 
 Simple titlebar color changer for KDE
 
